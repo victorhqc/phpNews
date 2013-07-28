@@ -77,8 +77,8 @@ abstract Class BDAbstracta {
 	
 	public function datos($solodatos = null, $mensaje = null){
 		$respuesta = $this->resultados($solodatos, $mensaje);
-		if(!array_key_exists('exito', $respuesta)){
-			throw new Exception('No se declaró "exito"');
+		if(!array_key_exists('success', $respuesta)){
+			throw new Exception('Success is not declared "success"');
 		}
 		if(!array_key_exists('mensaje', $respuesta)){
 			throw new Exception('No se declaró el mensaje de respesta para la UI del usuario');
