@@ -1,0 +1,8 @@
+<content>
+	<dom>
+		<login-title>Log in</login-title>
+		<username>Username</username>
+		<password>Password</password>
+		<button-login>Log in</button-login>
+	</dom>
+</content>

@@ -1,0 +1,12 @@
+{
+	"modules":{
+		"login":{
+			"url":"web/",
+			"nombre":"login"
+			},
+		"backend":{
+			"url":"web/",
+			"nombre":"backend"
+		}
+	}
+}
