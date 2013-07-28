@@ -1,0 +1,10 @@
+<content>
+	<dom>
+		<backend-title>Redactar </backend-title>
+		<backend-description>Comienza a escribir una noticia</backend-description>
+		<compose-title>Título</compose-title>
+		<compose-description>Mensaje</compose-description>
+		<button-ready>Redactar</button-ready>
+		<tag-title>Añadir etiquetas</tag-title>
+	</dom>
+</content>

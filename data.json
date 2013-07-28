@@ -7,11 +7,18 @@
 		"backend":{
 			"url":"web/",
 			"nombre":"backend"
+		},
+		"compose": {
+			"url":"web/",
+			"nombre":"compose"
+		},
+		"manage": {
+			"url": "web/",
+			"nombre": "manage"
 		}
 	},
 	"mainmenu":{
 		"compose": {},
-		"manage": {},
-		"users": {}
+		"manage": {}
 	}
 }

@@ -16,6 +16,14 @@
 				a.setAttribute('data-ltag', k);
 				li.appendChild(a);
 				menu.appendChild(li);
+
+				a.addEventListener('click', function(){
+					var n = this.getAttribute('data-ltag');
+					App._div = App.div;
+					App.div = '#main-content';
+					App.getModule(n);
+					App.current.start();
+				});
 			}
 		}
 
