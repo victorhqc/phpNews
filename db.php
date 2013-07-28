@@ -10,7 +10,7 @@ function startDB(){
 	
 	$myDB = new BD(array('tipo' => 'Vi_mysql', 'host' => $server_db, 'usuario'=> $usuario_db, 'contraseña' => $pass_db, 'bd' => $clientes_db));
 
-	return $myBD;
+	return $myDB;
 }
 
 ?>
