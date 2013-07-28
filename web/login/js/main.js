@@ -30,8 +30,17 @@
 			data[id] = input.value;
 		}
 
-		new Vi({url:'verifyEntry.php', data:data}).server(function(r){
-			console.log('r', r);
+		new Vi({url:'verifyEntry.php', data:data, response:'object'}).server(function(r){
+			btn.removeAttribute('disabled');
+			if(r.success === true){
+				//User is redirected to the backend of the platform.
+				App.getModule('backend');
+				App.current.start();
+			}else{
+				//Error is shown to user
+				var e = document.getElementById('errors');
+				e.style.display = 'block';
+			}
 		});
 	}
 

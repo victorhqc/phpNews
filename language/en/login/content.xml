@@ -4,5 +4,7 @@
 		<username>Username</username>
 		<password>Password</password>
 		<button-login>Log in</button-login>
+		<error-login>Access not allowed</error-login>
+		<error-description>Verify your user and/or password to be correct</error-description>
 	</dom>
 </content>

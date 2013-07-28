@@ -1,8 +1,8 @@
 <?php
-class Identidad {
-	private $usuario;
+class Identity {
+	private $username;
 	private $cookieUsr = "Uvi";
-	private $contraseña;
+	private $password;
 	private $cookiePass = "Kvi";
 	private $tiempo;
 	private $tmp;
@@ -30,25 +30,25 @@ class Identidad {
 		$tiempo = time() + $this->tmp;
 		$this->tiempo = $tiempo;
 		
-		setcookie($this->cookieUsr, $this->usuario, $this->tiempo); // <------- Username
-		setcookie($this->cookiePass, $this->contraseña, $this->tiempo); // <------- Password
+		setcookie($this->cookieUsr, $this->username, $this->tiempo); // <------- Username
+		setcookie($this->cookiePass, $this->password, $this->tiempo); // <------- Password
 	}
 	
-	//Obtiene la identidad del usuario.
+	//Obtiene la identidad del username.
 	public function getIdentity(){
 		$error = false;
 		if(array_key_exists($this->cookieUsr, $_COOKIE)){
-			$this->usuario = $_COOKIE[$this->cookieUsr];
+			$this->username = $_COOKIE[$this->cookieUsr];
 		}else{
 			$error = true;
 		}
 		if(array_key_exists($this->cookiePass, $_COOKIE)){
-			$this->contraseña = $_COOKIE[$this->cookiePass];
+			$this->password = $_COOKIE[$this->cookiePass];
 		}else{
 			$error = true;
 		}
 		
-		return array('pass' => $this->contraseña, 'usuario' => $this->usuario, 'error' => $error);
+		return array('pass' => $this->password, 'username' => $this->username, 'error' => $error);
 	}
 	
 	//Destruye cookies de identidad
@@ -64,6 +64,8 @@ class Identidad {
 		$datos = $this->getIdentity();
 		if($datos['error'] == true){
 			die(json_encode(array('success' => false, 'message' =>'You have no access')));
+		}else{
+			return array('success' => true);
 		}
 	}
 }

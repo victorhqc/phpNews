@@ -2,8 +2,8 @@
 include (__DIR__.'/db.php');
 include (__DIR__.'/identity.php');
 
+$identidad = new Identity();
+$i =  $identidad->verify();
 
-$identidad = new Identidad();
-echo $identidad->verify();
-
+echo json_encode($i);
 ?> 
