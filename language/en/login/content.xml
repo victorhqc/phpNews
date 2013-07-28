@@ -1,6 +1,6 @@
 <content>
 	<dom>
-		<login-title>Log in</login-title>
+		<login-title>Access</login-title>
 		<username>Username</username>
 		<password>Password</password>
 		<button-login>Log in</button-login>
