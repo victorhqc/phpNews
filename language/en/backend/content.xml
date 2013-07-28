@@ -2,5 +2,8 @@
 	<dom>
 		<backend-title>Welcome </backend-title>
 		<backend-description>to the News manager</backend-description>
+		<compose>Compose</compose>
+		<manage>Manage</manage>
+		<users>Users</users>
 	</dom>
 </content>

@@ -1,0 +1,10 @@
+<content>
+	<dom>
+		<login-title>Acceso</login-title>
+		<username>Usuario</username>
+		<password>Contraseña</password>
+		<button-login>Iniciar sesión</button-login>
+		<error-login>Acceso no autorizado</error-login>
+		<error-description>Verifica que tu usuario y/o contraseña sean correctos</error-description>
+	</dom>
+</content>

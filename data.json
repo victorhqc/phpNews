@@ -8,5 +8,10 @@
 			"url":"web/",
 			"nombre":"backend"
 		}
+	},
+	"mainmenu":{
+		"compose": {},
+		"manage": {},
+		"users": {}
 	}
 }
