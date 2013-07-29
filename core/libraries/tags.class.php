@@ -2,7 +2,7 @@
 require_once(__DIR__.'/object.class.php');
 
 class Tags extends Object {
-	private $tags;
+	public $tags;
 
 	public function __construct(){
 		$this->dbInit();
@@ -28,8 +28,8 @@ class Tags extends Object {
 }
 
 class Tag extends Object {
-	private $name;
-	private $id;
+	public $name;
+	public $id;
 
 	public function __construct($d){
 		$this->dbInit();
@@ -38,6 +38,22 @@ class Tag extends Object {
 			$this->gatherData($d['id']);
 		}else if(array_key_exists('search', $d)){
 			$this->search($d['search']);
+		}else if(array_key_exists('create', $d)){
+			$this->create($d['create']);
+		}
+	}
+
+	private function create($name){
+		//Does it already exists?
+		$this->_db->query("SELECT idTag FROM tags WHERE name ='".$name."'");
+		$verif = $this->_db->data(true);
+		die(var_dump($verif));
+		if(count($verif) == 0){
+			//It does not exists, proceed to create
+			$q = "INSERT INTO tags (name) VALUES ('".$name."')";
+			$this->_db->query($q);
+		}else{
+			die(json_encode($this->_err));
 		}
 	}
 
@@ -46,7 +62,10 @@ class Tag extends Object {
 		$this->_db->query($q);
 		$d = $this->_db->data(true);
 		if(count($d) > 0){
-
+			$d = $d[0];
+			foreach ($d as $key => $value) {
+				$this->{$key} = $value;
+			}
 		}else{
 			die(json_encode($this->_err));
 		}
