@@ -47,10 +47,9 @@ class Tag extends Object {
 		//Does it already exists?
 		$this->_db->query("SELECT idTag FROM tags WHERE name ='".$name."'");
 		$verif = $this->_db->data(true);
-		die(var_dump($verif));
 		if(count($verif) == 0){
 			//It does not exists, proceed to create
-			$q = "INSERT INTO tags (name) VALUES ('".$name."')";
+			$q = "INSERT INTO tags (name) VALUES ('".utf8_decode($name)."')";
 			$this->_db->query($q);
 		}else{
 			die(json_encode($this->_err));

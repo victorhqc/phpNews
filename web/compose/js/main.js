@@ -3,10 +3,9 @@
 	var Init = function(){
 		var I = this;
 		this.gatherData(function(r){
-			App.current._data = r;
-			App.current._data.chosenTags = {};
+			App.current._chosenTags = {};
 			I.searchTagsFunc();
-			I.displayTags(r.tags);
+			I.displayTags(App.current._data.tags);
 		});
 	};
 
@@ -52,12 +51,13 @@
 		ul.id = 'tags-available';
 
 		container.appendChild(ul);
-		var chosen = App.current._data.chosenTags;
+		var chosen = App.current._chosenTags;
 		for(var i = 0, len = tags.length; i < len; i++){
 			var tag = tags[i];
 			if(!chosen.hasOwnProperty(tag.id)){
 				var li = document.createElement('li');
 				li.id = 't-'+i;
+				li.className = 'proposed-tag';
 
 				ul.appendChild(li);
 
@@ -80,10 +80,31 @@
 	};
 
 	Init.prototype.addTagToNews = function(tag) {
-		var chosen = App.current._data.chosenTags;
+		var chosen = App.current._chosenTags;
+		var I = this;
 		if(!chosen.hasOwnProperty(tag.id)){
 			chosen[tag.id] = tag;
+
+			var j = {
+				id: tag.id,
+				name: tag.name,
+				container: '#chosen-tags-container',
+				callbacks: {
+					remove: function(t){
+						I.removeTagFromNews(t);
+					}
+				}
+			}
+
+			new Tag(j);
+			I.renderTagList(App.current._data.tags);
 		}
+	};
+
+	Init.prototype.removeTagFromNews = function(tag) {
+		delete App.current._chosenTags[tag.id];
+		tag.remove();
+		this.renderTagList(App.current._data.tags);
 	};
 
 	Init.prototype.addTagDOM = function(param){
@@ -105,13 +126,17 @@
 		title.appendChild(br);
 		title.appendChild(titleDesc);
 
+		container.appendChild(title);
+
 		var j = {
 			name: param,
 			container:'#tag-list-container',
 			callbacks: {
 				ok: function(t){
 					I.registerNewTag(param, function(r){
-						console.log('r', r);
+						I.gatherData(function(){
+							I.renderTagList(App.current._data.tags);
+						});
 					});
 				},
 				remove: function(t){
@@ -133,7 +158,12 @@
 
 	//Looks up for important information like tags
 	Init.prototype.gatherData = function(callback) {
-		var j = {file:'mainInfo.php', data: {}, callback:callback};
+		var j = {file:'mainInfo.php', data: {}, callback:function(r){
+			App.current._data = r;
+			if(typeof callback === 'function'){
+				callback();
+			}
+		}};
 		App.current.getServer(j);
 	};
 
