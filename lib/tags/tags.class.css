@@ -1,0 +1,8 @@
+.main-tag {
+	margin-right:20px;
+}
+
+.tag i {
+	margin-left: 10px;
+	cursor: pointer;
+}

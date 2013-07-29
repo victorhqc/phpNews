@@ -51,38 +51,32 @@
 		ul.className = 'nav bs-sidenav';
 		ul.id = 'tags-available';
 
+		container.appendChild(ul);
 		var chosen = App.current._data.chosenTags;
 		for(var i = 0, len = tags.length; i < len; i++){
 			var tag = tags[i];
 			if(!chosen.hasOwnProperty(tag.id)){
 				var li = document.createElement('li');
+				li.id = 't-'+i;
 
-				var btn = document.createElement('button');
-				btn.className = 'btn btn-success';
-				btn.setAttribute('data-id', tag.id);
-				btn.setAttribute('data-i', i);
-
-				var text = document.createElement('span');
-				text.appendChild(document.createTextNode(tag.name));
-
-				var icon = document.createElement('i');
-				icon.className = 'glyphicon glyphicon-tag';
-
-				btn.appendChild(icon);
-				btn.appendChild(text);
-
-				li.appendChild(btn);
 				ul.appendChild(li);
 
-				btn.addEventListener('click', function(){
-					var i = this.getAttribute('data-i');
-					var tag = tags[i];
-					I.addTagToNews(tag);
-				});
+				var j = {
+					name: tag.name,
+					container:'#t-'+i,
+					id: tag.id,
+					_i: i,
+					callbacks: {
+						ok: function(t){
+							var i = t._i;
+							var tag = tags[i];
+							I.addTagToNews(tag);
+						}
+					}
+				}
+				var t = new Tag(j);
 			}
 		}
-
-		container.appendChild(ul);
 	};
 
 	Init.prototype.addTagToNews = function(tag) {
@@ -111,51 +105,23 @@
 		title.appendChild(br);
 		title.appendChild(titleDesc);
 
-		var tag = document.createElement('div');
-		tag.className = 'pull-left label-tag label label-success';
-
-		var icon = document.createElement('i');
-		icon.className = 'glyphicon glyphicon-tag';
-		var text = document.createElement('span');
-		text.appendChild(document.createTextNode(param));
-
-		tag.appendChild(icon);
-		tag.appendChild(text);
-
-		container.appendChild(title);
-		container.appendChild(tag);
-
-		var fixer = document.createElement('div');
-		fixer.className = 'clearfix';
-		container.appendChild(fixer);
-
-		var btncontainer = document.createElement('div');
-		btncontainer.className = 'btn-group';
-		btncontainer.id = 'btns-new-tag';
-
-		var btnok = document.createElement('button');
-		btnok.className = 'btn';
-		btnok.setAttribute('data-ltag', 'new-tag-ok');
-
-		var btncancel = document.createElement('button');
-		btncancel.className = 'btn btn-danger';
-		btncancel.setAttribute('data-ltag', 'new-tag-cancel');
-
-		btncontainer.appendChild(btnok);
-		btncontainer.appendChild(btncancel);
-		container.appendChild(btncontainer);
-
-		btnok.addEventListener('click', function(){
-			I.registerNewTag(param, function(r){
-				console.log('r', r);
-			});
-		});
-
-		btncancel.addEventListener('click', function(){
-			I.displayTags(App.current._data.tags);
-			var input = document.getElementById('search-tags');
-			input.value = '';
-		});
+		var j = {
+			name: param,
+			container:'#tag-list-container',
+			callbacks: {
+				ok: function(t){
+					I.registerNewTag(param, function(r){
+						console.log('r', r);
+					});
+				},
+				remove: function(t){
+					I.displayTags(App.current._data.tags);
+					var input = document.getElementById('search-tags');
+					input.value = '';
+				}
+			}
+		};
+		var tag = new Tag(j);
 		
 		App.current.translate();
 	}

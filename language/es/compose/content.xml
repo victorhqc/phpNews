@@ -6,6 +6,7 @@
 		<compose-description>Mensaje</compose-description>
 		<button-ready>Redactar</button-ready>
 		<tag-title>Añadir etiquetas</tag-title>
+		<chosen-tags>Etiquetas elegidas</chosen-tags>
 
 		<new-tag-title>Etiqueta inexistente</new-tag-title>
 		<new-tag-description>¿Quiere añadirla?</new-tag-description>
