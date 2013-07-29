@@ -4,10 +4,10 @@ $url = $root.'core/libraries/';
 require_once($root.'verifyMembers.php');
 require_once($url.'tags.class.php');
 
-$tags = new Tags();
-$tags = $tags->getData();
+$tag = $_POST['tag'];
 
-$response = array('tags' => $tags['tags']);
+$t = new Tag(array('create' => $tag));
 
-echo json_encode($response);
+$r = array('success' => true);
+echo json_encode($r);
 ?>
