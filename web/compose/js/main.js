@@ -260,6 +260,12 @@
 			values[inp.name] = inp.value;
 		}
 
+		//Tags
+		values.tags = App.current._chosenTags;
+
+		//Files
+		values.files = App.current._files;
+
 		console.log('values', values);
 	};
 
