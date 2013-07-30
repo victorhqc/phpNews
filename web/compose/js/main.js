@@ -2,8 +2,12 @@
 	"use strict";
 	var Init = function(){
 		var I = this;
-		this.gatherData(function(r){
+		this.gatherData(function(){
 			App.current._chosenTags = {};
+
+			I.addFilesTrigger();
+			I.submitFunc();
+
 			I.searchTagsFunc();
 			I.displayTags(App.current._data.tags);
 		});
@@ -156,6 +160,101 @@
 		App.current.getServer(j);
 	};
 
+	Init.prototype.addFilesTrigger = function() {
+		//Unfortunetly the file input cannot be styled, so I thought a nice solution for the css-dilema :)
+		var btn = document.getElementById('false-file-button');
+
+		var I = this;
+		btn.addEventListener('click', function(e){
+			var inpf = document.getElementById('fileselect');
+			inpf.click();
+
+			if(e.preventDefault){
+				e.preventDefault();
+			}
+			e.returnValue = false;
+		});
+
+		var inpf = document.getElementById('fileselect');
+		inpf.addEventListener('change', function(){
+			I.renderFiles();
+		});
+
+	};
+
+	Init.prototype.renderFiles = function(){
+		var input = document.getElementById('fileselect');
+		var I = this;
+		if(typeof input.files !== 'undefined'){
+			var files = input.files
+			
+			var ul = document.getElementById('chosen-files');
+			for(var i = 0, len = files.length; i < len; i++){
+				var f = files[i];
+
+				var li = document.createElement('li');
+				li.id = 'li-f-'+i;
+				li.className = 'chosen-file';
+				ul.appendChild(li);
+
+			 	var jt = {
+					id: i,
+					name: f.name,
+					container: '#li-f-'+i,
+					className: 'label label-info',
+					callbacks: {
+						remove: function(t){
+							I.removeFile(t);
+							var li = document.getElementById('li-f-'+t.id);
+							li.parentNode.removeChild(li);
+						}
+					}
+				}
+
+				new Tag(jt);
+			}
+		}
+	}
+
+	Init.prototype.removeFile = function(t){
+		var inpf = document.getElementById('fileselect');
+		var files = inpf.files;
+		for(var i = 0, len = files.length; i < len; i++){
+			var f = files[i];
+			if(t.id === i){
+				delete files[i];
+			}
+		}
+
+		t.remove();
+	}
+
+	Init.prototype.submitFunc = function() {
+		var I = this;
+		var btn = document.getElementById('compose-form');
+		btn.addEventListener('submit', function(e){
+			if(e.preventDefault){
+				e.preventDefault();
+			}
+			e.returnValue = false;
+
+			I.gatherComposeData();
+		}, false);
+	};
+
+	Init.prototype.gatherComposeData = function() {
+		var inps = document.querySelectorAll('#compose-form .form-control');
+
+		var values = {};
+		for(var i = 0, len = inps.length; i < len; i++){
+			var inp = inps[i];
+
+			values[inp.name] = inp.value;
+		}
+
+		console.log('values', values);
+	};
+
 	//Looks up for important information like tags
 	Init.prototype.gatherData = function(callback) {
 		var j = {file:'mainInfo.php', data: {}, callback:function(r){
@@ -166,6 +265,21 @@
 		}};
 		App.current.getServer(j);
 	};
+
+	//Thanks for sharing this code!
+	//http://jehiah.cz/a/firing-javascript-events-properly
+	function fireEvent(element,event) {
+		if (document.createEvent) {
+			// dispatch for firefox + others
+			var evt = document.createEvent("HTMLEvents");
+			evt.initEvent(event, true, true ); // event type,bubbling,cancelable
+			return !element.dispatchEvent(evt);
+		} else {
+			// dispatch for IE
+			var evt = document.createEventObject();
+		return element.fireEvent('on'+event,evt)
+	}
+}
 
 	var i = new Init();
 })();

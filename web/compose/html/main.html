@@ -4,20 +4,28 @@
 			<fieldset>
 				<div class="form-group">
 					<label for="c-title" data-ltag="compose-title"></label>
-					<input type="text" class="form-control" id="c-title">
+					<input type="text" class="form-control" id="c-title" name="title" required>
 				</div>
 				<div class="form-group">
 					<label for="c-description" data-ltag="compose-description"></label>
-					<textarea class="form-control" id="c-description">
+					<textarea class="form-control" id="c-description" name="description">
 					</textarea>
 				</div>
+				<div class="btn-group">
+					<button id="compose-btn" type="submit" class="btn btn-primary" data-ltag="button-ready"></button>
+					<button id="false-file-button" class="btn btn-info">
+						<i class="glyphicon glyphicon-paperclip"></i>
+					</button>
+				</div>
+				<div id="files-added" class="page-header">
+					<h4>
+						<span data-ltag="files-title"></span>
+						<i class="glyphicon glyphicon-file"></i>
+					</h4>
+					<input type="file" id="fileselect" name="fileselect[]" multiple="multiple" />
+					<ul class="nav bs-sidenav" id="chosen-files"></ul>
+				</div>
 			</fieldset>
-			<div class="btn-group">
-				<button type="submit" class="btn btn-primary" data-ltag="button-ready"></button>
-				<button class="btn btn-info">
-					<i class="glyphicon glyphicon-paperclip"></i>
-				</button>
-			</div>
 			<div id="chosen-tags" class="page-header">
 				<h4>
 					<span data-ltag="chosen-tags"></span>

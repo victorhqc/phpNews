@@ -6,6 +6,10 @@
 	padding-right: 3%;
 }
 
-.proposed-tag {
+.proposed-tag, .chosen-file {
 	margin: 10px 0;
+}
+
+input[type="file"] {
+	display: none;
 }
