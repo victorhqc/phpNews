@@ -4,6 +4,7 @@
 		var I = this;
 		this.gatherData(function(){
 			App.current._chosenTags = {};
+			App.current._files = {};
 
 			I.addFilesTrigger();
 			I.submitFunc();
@@ -186,11 +187,19 @@
 		var input = document.getElementById('fileselect');
 		var I = this;
 		if(typeof input.files !== 'undefined'){
-			var files = input.files
+			var files = input.files;
 			
 			var ul = document.getElementById('chosen-files');
 			for(var i = 0, len = files.length; i < len; i++){
 				var f = files[i];
+				var reader = new FileReader();
+				reader._file = f;
+				reader._i = i;
+				reader.onload = function(e){
+					var f = {name: e.target._file.name, file:e.target.result};
+					App.current._files[e.target._i] = f;
+				};
+				reader.readAsDataURL(f);
 
 				var li = document.createElement('li');
 				li.id = 'li-f-'+i;
@@ -202,11 +211,10 @@
 					name: f.name,
 					container: '#li-f-'+i,
 					className: 'label label-info',
+					file: f,
 					callbacks: {
 						remove: function(t){
 							I.removeFile(t);
-							var li = document.getElementById('li-f-'+t.id);
-							li.parentNode.removeChild(li);
 						}
 					}
 				}
@@ -217,16 +225,16 @@
 	}
 
 	Init.prototype.removeFile = function(t){
-		var inpf = document.getElementById('fileselect');
-		var files = inpf.files;
-		for(var i = 0, len = files.length; i < len; i++){
-			var f = files[i];
-			if(t.id === i){
-				delete files[i];
+		var files = App.current._files;
+		for(var f in files){
+			if(files.hasOwnProperty(f)){
+				if(t.id === parseInt(f)){
+					t.remove();
+					delete App.current._files[f];
+					break;
+				}
 			}
 		}
-
-		t.remove();
 	}
 
 	Init.prototype.submitFunc = function() {
