@@ -12,19 +12,19 @@ CREATE TABLE IF NOT EXISTS `news` (
   `idNew` int(10) NOT NULL AUTO_INCREMENT,
   `idUser` int(10) NOT NULL,
   `title` varchar (200),
-  `message` text,
+  `description` text,
   KEY `idUser` (`idUser`),
   PRIMARY KEY (`idNew`),
   CONSTRAINT `news_idUser` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `archives` (
-  `idArchive` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `files` (
+  `idFile` int(10) NOT NULL AUTO_INCREMENT,
   `idNew` int(10) NOT NULL,
-  `archive` varchar(100) NOT NULL,
+  `file` varchar(100) NOT NULL,
   KEY `idNew` (`idNew`),
-  PRIMARY KEY (`idArchive`),
-  CONSTRAINT `archives_idNew` FOREIGN KEY (`idNew`) REFERENCES `news` (`idNew`) ON DELETE CASCADE
+  PRIMARY KEY (`idFile`),
+  CONSTRAINT `files_idNew` FOREIGN KEY (`idNew`) REFERENCES `news` (`idNew`) ON DELETE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `tags` (
