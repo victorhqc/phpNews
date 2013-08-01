@@ -246,9 +246,14 @@
 			}
 			e.returnValue = false;
 
-			I.gatherComposeData();
+			var data = I.gatherComposeData();
+			I.sendData(data, function(){});
 		}, false);
 	};
+
+	Init.prototype.sendData = function(data, callback){
+		App.current.getServer('composeNew.php', data, callback);
+	}
 
 	Init.prototype.gatherComposeData = function() {
 		var inps = document.querySelectorAll('#compose-form .form-control');
@@ -266,7 +271,7 @@
 		//Files
 		values.files = App.current._files;
 
-		console.log('values', values);
+		return values;
 	};
 
 	//Looks up for important information like tags
