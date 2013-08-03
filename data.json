@@ -15,10 +15,21 @@
 		"manage": {
 			"url": "web/",
 			"nombre": "manage"
+		},
+		"home": {
+			"url": "web/",
+			"nombre": "home"
 		}
 	},
 	"mainmenu":{
-		"compose": {},
-		"manage": {}
+		"home": {
+			"icon":"glyphicon glyphicon-home"
+			},
+		"compose": {
+			"icon":"glyphicon glyphicon-pencil"
+			},
+		"manage": {
+			"icon":"glyphicon glyphicon-dashboard"
+		}
 	}
 }
