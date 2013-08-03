@@ -1,0 +1,20 @@
+<content>
+	<dom>
+		<backend-title>Compose </backend-title>
+		<backend-description>Begin to write a news</backend-description>
+		<compose-title>Title</compose-title>
+		<compose-description>Message</compose-description>
+		<button-ready>Compose</button-ready>
+		<tag-title>Add tags</tag-title>
+		<chosen-tags>Chosen tags</chosen-tags>
+		<files-title>Files</files-title>
+
+		<new-tag-title>Inexistent Tag</new-tag-title>
+		<new-tag-description>Want to creat it?</new-tag-description>
+		<new-tag-ok>Ok</new-tag-ok>
+		<new-tag-cancel>Cancel</new-tag-cancel>
+	</dom>
+
+		<success-title>The news has been published :)</success-title>
+		<success-description>Verify that the content is correct.</success-description>
+</content>
