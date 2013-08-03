@@ -311,20 +311,6 @@
 		}};
 		App.current.getServer(j);
 	};
-
-	//Thanks for sharing this code!
-	//http://jehiah.cz/a/firing-javascript-events-properly
-	function fireEvent(element,event) {
-		if (document.createEvent) {
-			// dispatch for firefox + others
-			var evt = document.createEvent("HTMLEvents");
-			evt.initEvent(event, true, true ); // event type,bubbling,cancelable
-			return !element.dispatchEvent(evt);
-		} else {
-			// dispatch for IE
-			var evt = document.createEventObject();
-		return element.fireEvent('on'+event,evt)
-	}
 }
 
 	var i = new Init();
