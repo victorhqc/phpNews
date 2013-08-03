@@ -178,10 +178,37 @@
 
 		var inpf = document.getElementById('fileselect');
 		inpf.addEventListener('change', function(){
-			I.renderFiles();
+			if(I.validateSize()){
+				I.renderFiles();
+			}
 		});
 
 	};
+
+	//The max upload file must be checked with the obtained files
+	Init.prototype.validateSize = function(){
+		var input = document.getElementById('fileselect');
+		if(typeof input.files !== 'undefined'){
+			var files = input.files;
+			var size = 0;
+			for(var k in files){
+				var file = files[k];
+				if(files.hasOwnProperty(k) && (typeof file.size === 'number')){
+					size = size + file.size;
+				}
+			}
+
+			//The current size is in bytes, megabytes format is needed.
+			size = size / 1024; // Kb
+			size = size / 1024; // Mb
+		}
+
+		var max = App.current._data.maxUpload;
+		max = max.match(/([0-9]+)/gi);
+		max = parseInt(max);
+		console.log(size, '>', max);
+		return (size > max) ? false : true;
+	}
 
 	Init.prototype.renderFiles = function(){
 		var input = document.getElementById('fileselect');

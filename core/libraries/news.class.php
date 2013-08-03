@@ -1,5 +1,7 @@
 <?php
+$path_to_root = __DIR__.'/../../';
 require_once(__DIR__.'/object.class.php');
+require_once($path_to_root.'config.php');
 
 class ManyNews extends Object {
 	public $manyNews;
@@ -89,8 +91,36 @@ class News extends Object {
 		}
 	}
 
-	private function link_files($file){
+	private function link_files($files){
+		foreach ($files as $file) {
+			$this->save_file_to_path($file);
+		}
+	}
 
+	//Saves the file into the specified file
+	private function save_file_to_path($file){
+		global $path_to_root;
+
+		$mainFolder = $path_to_root.$GLOBALS['stored_files_path'];
+		if(!is_dir($mainFolder)){
+			mkdir($mainFolder);
+		}
+
+		//After making sure the main folder is created, another folder is created, with the idNews as name.
+		//This just making sure no file is overwritten over time, also for making file order clear.
+		$newFolder = $mainFolder.'/'.$this->id;
+		if(!is_dir($newFolder)){
+			mkdir($newFolder);
+		}
+
+		//And now proceed to save the file to path.
+		$f = $file['file'];
+		$n = $file['name'];
+		file_put_contents($newFolder.'/'.$n, base64_decode($f));
+
+		//After saving the file, the name of the file is stored, just in case the path changes, we still have the name of the file.
+		$query = "INSERT INTO files (idNew, file) VALUES(".$this->id.", '".$n."')";
+		$this->_db->query($query);
 	}
 
 	//Get functions
