@@ -4,6 +4,6 @@
 		<backend-description>to the News manager</backend-description>
 		<compose>Compose</compose>
 		<manage>Manage</manage>
-		<users>Users</users>
+		<home>Home</home>
 	</dom>
 </content>

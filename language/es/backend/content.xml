@@ -1,9 +1,7 @@
 <content>
 	<dom>
-		<backend-title>Bienvenido </backend-title>
-		<backend-description>al administrador de noticias</backend-description>
 		<compose>Redactar</compose>
 		<manage>Administrar</manage>
-		<users>Usuarios</users>
+		<home>Inicio</home>
 	</dom>
 </content>

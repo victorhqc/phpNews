@@ -2,4 +2,6 @@
 	<dom>
 		
 	</dom>
+	<error_title>Ha habido un error :(</error_title>
+	<error_desc>Vuelve a intentarlo nuevamente en unos minutos, si el error persiste contacta a un administrador!</error_desc>
 </content>

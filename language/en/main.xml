@@ -1,4 +1,6 @@
 <content>
 	<dom>
 	</dom>
+	<error_title>An error has occurred :(</error_title>
+	<error_desc>Try again in a few minutes, if the error persists, contact an administrator!</error_desc>
 </content>

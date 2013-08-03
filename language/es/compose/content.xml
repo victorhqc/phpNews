@@ -14,4 +14,7 @@
 		<new-tag-ok>Ok</new-tag-ok>
 		<new-tag-cancel>Cancelar</new-tag-cancel>
 	</dom>
+
+		<success-title>Se ha publicado la noticia :)</success-title>
+		<success-description>Verifica que el contenido publicado sea correcto.</success-description>
 </content>

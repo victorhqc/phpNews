@@ -5,6 +5,8 @@
 		this.gatherData(function(){
 			App.current._chosenTags = {};
 			App.current._files = {};
+			App.current._tagFiles = {};
+			App.current._tagTags = {};
 
 			I.addFilesTrigger();
 			I.submitFunc();
@@ -75,9 +77,10 @@
 						ok: function(t){
 							var i = t._i;
 							var tag = tags[i];
-							I.addTagToNews(tag);
+							t.I.addTagToNews(tag);
 						}
-					}
+					},
+					I:I
 				}
 				var t = new Tag(j);
 			}
@@ -96,12 +99,15 @@
 				container: '#chosen-tags-container',
 				callbacks: {
 					remove: function(t){
-						I.removeTagFromNews(t);
+						console.log(t);
+						t.I.removeTagFromNews(t);
 					}
-				}
+				},
+				I: I
 			}
 
-			new Tag(j);
+			var t = new Tag(j);
+			App.current._tagTags[tag.id] = t;
 			I.renderTagList(App.current._data.tags);
 		}
 	};
@@ -145,10 +151,11 @@
 					});
 				},
 				remove: function(t){
-					I.displayTags(App.current._data.tags);
+					t.I.displayTags(App.current._data.tags);
 					var input = document.getElementById('search-tags');
 					input.value = '';
-				}
+				},
+				I:I
 			}
 		};
 		var tag = new Tag(j);
@@ -217,6 +224,7 @@
 			var files = input.files;
 			
 			var ul = document.getElementById('chosen-files');
+			
 			for(var i = 0, len = files.length; i < len; i++){
 				var f = files[i];
 				var reader = new FileReader();
@@ -241,12 +249,14 @@
 					file: f,
 					callbacks: {
 						remove: function(t){
-							I.removeFile(t);
+							t.I.removeFile(t);
 						}
-					}
+					},
+					I:I
 				}
 
-				new Tag(jt);
+				var t = new Tag(jt);
+				App.current._tagFiles[i] = t;
 			}
 		}
 	}
@@ -265,18 +275,70 @@
 	}
 
 	Init.prototype.submitFunc = function() {
-		var I = this;
 		var btn = document.getElementById('compose-form');
+		btn._this = this;
 		btn.addEventListener('submit', function(e){
+			var b = document.getElementById('compose-btn')
+			b.setAttribute('disabled', 'disabled');
 			if(e.preventDefault){
 				e.preventDefault();
 			}
 			e.returnValue = false;
 
-			var data = I.gatherComposeData();
-			I.sendData(data, function(){});
+			var data = this._this.gatherComposeData();
+			var T = this._this;
+			this._this.sendData(data, function(r){
+				var ja = {type:'success'};
+				ja.title = App.current.language.getText('success-title');
+				ja.description = App.current.language.getText('success-description');
+
+				if(r.success === false){
+					ja.title = App.current.language.getMainText('error_title');
+					ja.description = App.current.getMainText('error_desc');
+					ja.type = 'danger';
+				}else{
+					T.resetData();
+					b.removeAttribute('disabled');
+				}
+
+				new nAlert(ja);
+			});
 		}, false);
 	};
+
+	Init.prototype.resetData = function(){
+		//Erase selected tags
+		var tags = App.current._tagTags;
+		for(var t in tags){
+			if(tags.hasOwnProperty(t)){
+				var tag = tags[t];
+				tag.callbacks.remove(tag);
+
+				delete tags[t];
+			}
+		}
+
+		//Erase current files
+		var files = App.current._tagFiles;
+		for(var t in files){
+			if(files.hasOwnProperty(t)){
+				var f = files[t];
+				f.callbacks.remove(f);
+
+				delete files[t];
+			}
+		}
+
+		//Clean Inputs
+		var inps = document.querySelectorAll('#compose-form .form-control');
+
+		var values = {};
+		for(var i = 0, len = inps.length; i < len; i++){
+			var inp = inps[i];
+
+			inp.value = '';
+		}
+	}
 
 	Init.prototype.sendData = function(data, callback){
 		App.current.getServer('composeNew.php', data, callback);
@@ -311,7 +373,6 @@
 		}};
 		App.current.getServer(j);
 	};
-}
 
 	var i = new Init();
 })();
