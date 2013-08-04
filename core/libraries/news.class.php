@@ -173,7 +173,7 @@ class News extends Object {
 		$this->files = array();
 		if(count($data) > 0){
 			$data['path'] = $folder;
-			$this->files = $folder;
+			$this->files[] = $data;
 		}
 	}
 
