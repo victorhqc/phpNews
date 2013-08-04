@@ -3,11 +3,27 @@ require_once(__DIR__.'/object.class.php');
 
 class Tags extends Object {
 	public $tags;
+	public $get = 'all';
 
-	public function __construct(){
+	public function __construct($props = null){
 		$this->dbInit();
 
-		$this->tags = $this->gatherData();
+		if($props != null){
+			$this->newData($props);
+		}
+
+		$tags = array();
+		switch($this->get){
+			case 'popular':
+				$tags = $this->popularTags();
+			break;
+			case 'all':
+			default:
+				$tags = $this->gatherData();
+			break;
+		}
+
+		$this->tags = $tags;
 	}
 
 	private function gatherData(){
@@ -20,6 +36,25 @@ class Tags extends Object {
 			$arr = array('id' => $t['id']);
 			$tag = new Tag($arr);
 			$tag = $tag->getData();
+			$tags[] = $tag;
+		}
+
+		return $tags;
+	}
+
+	//Gets the most popular tags
+	private function popularTags(){
+		$q = "SELECT COUNT(a.idTag) AS times, b.idTag AS id FROM newsTags AS a RIGHT OUTER JOIN tags AS b ON a.idTag=b.idTag GROUP BY b.idTag ORDER BY times DESC LIMIT 0,10";
+
+		$this->_db->query($q);
+		$data = $this->_db->data(true);
+
+		$tags = array();
+		foreach($data as $t){
+			$arr = array('id' => $t['id']);
+			$tag = new Tag($arr);
+			$tag = $tag->getData();
+			$tag['times'] = $t['times'];
 			$tags[] = $tag;
 		}
 
