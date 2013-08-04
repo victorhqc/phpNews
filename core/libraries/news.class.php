@@ -9,6 +9,7 @@ class ManyNews extends Object {
 	private $i = 0;
 	public $min = 0;
 	public $max = 50;
+	public $path = '';
 
 	public function __construct($params){
 		$this->dbInit();
@@ -129,7 +130,12 @@ class News extends Object {
 		//And now proceed to save the file to path.
 		$f = $file['file'];
 		$n = $file['name'];
-		file_put_contents($newFolder.'/'.$n, base64_decode($f));
+
+
+		list($type, $f) = explode(';', $f);
+		list(, $f)      = explode(',', $f);
+		$f = base64_decode($f);
+		file_put_contents($newFolder.'/'.$n, $f);
 
 		//After saving the file, the name of the file is stored, just in case the path changes, we still have the name of the file.
 		$query = "INSERT INTO files (idNew, file) VALUES(".$this->id.", '".$n."')";
@@ -165,15 +171,16 @@ class News extends Object {
 	}
 
 	private function gatherFiles(){
-		$folder = $this->_mainFolder.'/'.$this->id;
+		//$folder = $this->_mainFolder.'/'.$this->id;
+		$folder = $GLOBALS['stored_files_path'].'/'.$this->id;
 
 		$q = "SELECT idFile, file FROM files WHERE idNew=".$this->id;
 		$this->_db->query($q);
 		$data = $this->_db->data(true);
 		$this->files = array();
 		if(count($data) > 0){
-			$data['path'] = $folder;
-			$this->files[] = $data;
+			$this->path = $folder;
+			$this->files = $data;
 		}
 	}
 
