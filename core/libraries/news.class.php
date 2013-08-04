@@ -4,16 +4,27 @@ require_once(__DIR__.'/object.class.php');
 require_once($path_to_root.'config.php');
 
 class ManyNews extends Object {
-	public $manyNews;
+	public $news;
+	private $amount = 50;
+	private $i = 0;
+	public $min = 0;
+	public $max = 50;
 
-	public function __construct(){
+	public function __construct($params){
 		$this->dbInit();
+		$this->newData($params);
+		$this->setPagination();
 
-		$this->manyNews = $this->gatherData();
+		$this->news = $this->gatherData();
+	}
+
+	private function setPagination(){
+		$this->max = $this->i + 1 * $this->amount;
+		$this->min = $this->max - $this->amount;
 	}
 
 	private function gatherData(){
-		$q = "SELECT idNew AS id FROM news";
+		$q = "SELECT idNew AS id FROM news ORDER BY idNew DESC LIMIT ".$this->min.", ".$this->max;
 		$this->_db->query($q);
 		$data = $this->_db->data(true);
 
@@ -32,12 +43,16 @@ class ManyNews extends Object {
 class News extends Object {
 	public $id;
 	public $title;
-	public $message;
+	public $description;
 	public $tags;
 	public $files;
+	private $_mainFolder;
 
 	public function __construct($d){
 		$this->dbInit();
+
+		global $path_to_root;
+		$this->_mainFolder = $path_to_root.$GLOBALS['stored_files_path'];
 
 		if(array_key_exists('id', $d)){
 			$this->gatherData($d['id']);
@@ -63,6 +78,7 @@ class News extends Object {
 			$t = gettype($value);
 			if($t != 'array'){
 				if($value != ''){
+					$value = utf8_decode($value);
 					$columns .= $key.", ";
 					$values .= "'".$value."', ";
 				}
@@ -99,16 +115,13 @@ class News extends Object {
 
 	//Saves the file into the specified file
 	private function save_file_to_path($file){
-		global $path_to_root;
-
-		$mainFolder = $path_to_root.$GLOBALS['stored_files_path'];
-		if(!is_dir($mainFolder)){
-			mkdir($mainFolder);
+		if(!is_dir($this->_mainFolder)){
+			mkdir($this->_mainFolder);
 		}
 
 		//After making sure the main folder is created, another folder is created, with the idNews as name.
 		//This just making sure no file is overwritten over time, also for making file order clear.
-		$newFolder = $mainFolder.'/'.$this->id;
+		$newFolder = $this->_mainFolder.'/'.$this->id;
 		if(!is_dir($newFolder)){
 			mkdir($newFolder);
 		}
@@ -127,7 +140,7 @@ class News extends Object {
 	//-------------
 	
 	private function gatherData($id){
-		$q = "SELECT title, message, idNew AS id FROM news WHERE idNew=".$id;
+		$q = "SELECT title, description, idNew AS id FROM news WHERE idNew=".$id;
 		$this->_db->query($q);
 		$d = $this->_db->data(true);
 		if(count($d) > 0){
@@ -135,17 +148,33 @@ class News extends Object {
 			foreach ($d as $key => $value) {
 				$this->{$key} = $value;
 			}
+
+			$this->gatherTags();
+			$this->gatherFiles();
 		}else{
 			die(json_encode($this->_err));
 		}
 	}
 
 	private function gatherTags(){
+		$q = "SELECT b.name, a.idTag FROM newsTags AS a RIGHT OUTER JOIN tags AS b ON a.idTag=b.idTag WHERE a.idNew=".$this->id;
+		$this->_db->query($q);
+		$data = $this->_db->data(true);
 
+		$this->tags = $data;
 	}
 
 	private function gatherFiles(){
+		$folder = $this->_mainFolder.'/'.$this->id;
 
+		$q = "SELECT idFile, file FROM files WHERE idNew=".$this->id;
+		$this->_db->query($q);
+		$data = $this->_db->data(true);
+		$this->files = array();
+		if(count($data) > 0){
+			$data['path'] = $folder;
+			$this->files = $folder;
+		}
 	}
 
 	//Search functions
