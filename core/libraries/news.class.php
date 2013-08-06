@@ -200,7 +200,7 @@ class News extends Object {
 		//$folder = $this->_mainFolder.'/'.$this->id;
 		$folder = $GLOBALS['stored_files_path'].'/'.$this->id;
 
-		$q = "SELECT idFile, file FROM files WHERE idNew=".$this->id;
+		$q = "SELECT idFile, file, file AS fileName FROM files WHERE idNew=".$this->id;
 		$this->_db->query($q);
 		$data = $this->_db->data(true);
 		$this->files = array();
