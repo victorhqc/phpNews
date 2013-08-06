@@ -20,6 +20,24 @@
 			var n = news[i];
 			n.container = container;
 			var ne = new News(n);
+			var d = ne.date;
+			d = d.match(/([0-9]{4}\-[0-9]{2}\-[0-9]{2})/gi);
+			if(d !== null){
+				d = d[0];
+				var query = '#'+ne.getDOMId()+' .panel-title small';
+				var c = document.querySelector(query);
+				if(c !== null){
+					d = d.match(/([0-9]+)/gi);
+					for(var k in d){
+						if(d.hasOwnProperty(k)){
+							d[k] = parseInt(d[k]);
+						}
+					}
+					var month = App.language.getMainText('m-'+d[1]);
+					var date = ' '+d[2]+' '+month+' '+d[0];
+					c.innerHTML = date;
+				}
+			}
 		}
 	};
 

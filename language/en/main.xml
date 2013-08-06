@@ -3,4 +3,27 @@
 	</dom>
 	<error_title>An error has occurred :(</error_title>
 	<error_desc>Try again in a few minutes, if the error persists, contact an administrator!</error_desc>
+	<months>
+		<m-1>January</m-1>
+		<m-2>February</m-2>
+		<m-3>March</m-3>
+		<m-4>April</m-4>
+		<m-5>May</m-5>
+		<m-6>June</m-6>
+		<m-7>July</m-7>
+		<m-8>August</m-8>
+		<m-9>September</m-9>
+		<m-10>October</m-10>
+		<m-11>November</m-11>
+		<m-12>December</m-12>
+	</months>
+	<daysOfWeek>
+		<d-1>Sunday</d-1>
+		<d-2>Monday</d-2>
+		<d-3>Tuesday</d-3>
+		<d-4>Wednesday</d-4>
+		<d-5>Thursday</d-5>
+		<d-6>Friday</d-6>
+		<d-7>Saturday</d-7>
+	</daysOfWeek>
 </content>

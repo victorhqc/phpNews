@@ -4,4 +4,27 @@
 	</dom>
 	<error_title>Ha habido un error :(</error_title>
 	<error_desc>Vuelve a intentarlo nuevamente en unos minutos, si el error persiste contacta a un administrador!</error_desc>
+	<months>
+		<m-1>Enero</m-1>
+		<m-2>Febrero</m-2>
+		<m-3>Marzo</m-3>
+		<m-4>Abril</m-4>
+		<m-5>Mayo</m-5>
+		<m-6>Junio</m-6>
+		<m-7>Julio</m-7>
+		<m-8>Agosto</m-8>
+		<m-9>Septiembre</m-9>
+		<m-10>Octubre</m-10>
+		<m-11>Noviembre</m-11>
+		<m-12>Diciembre</m-12>
+	</months>
+	<daysOfWeek>
+		<d-1>Domingo</d-1>
+		<d-2>Lunes</d-2>
+		<d-3>Martes</d-3>
+		<d-4>Miércoles</d-4>
+		<d-5>Jueves</d-5>
+		<d-6>Viernes</d-6>
+		<d-7>Sábado</d-7>
+	</daysOfWeek>
 </content>
