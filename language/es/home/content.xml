@@ -3,6 +3,8 @@
 		<backend-title>Bienvenido </backend-title>
 		<backend-description>al administrador de noticias</backend-description>
 
+		<search>Buscar</search>
+
 		<pop-tags-subtitle>Etiquetas populares </pop-tags-subtitle>
 	</dom>
 </content>

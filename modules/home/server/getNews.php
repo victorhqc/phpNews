@@ -7,6 +7,7 @@ require_once ($url.'news.class.php');
 
 //Get the news
 $p = $_POST;
+$p['get'] = 'regular'; // Regular news (Gets all the news with pagination)
 $news = new ManyNews($p);
 $news = $news->news;
 
