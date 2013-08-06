@@ -5,12 +5,12 @@ require_once($path_to_root.'config.php');
 
 class ManyNews extends Object {
 	public $news;
-	private $amount = 50;
-	private $i = 0;
+	public $amount = 50;
+	public $i = 0;
 	public $min = 0;
 	public $max = 50;
 	public $path = '';
-	private $get;
+	public $get;
 
 	public function __construct($params){
 		if(!array_key_exists('get', $params)){
@@ -44,7 +44,7 @@ class ManyNews extends Object {
 	}
 
 	private function searchData($p){
-		$q = "SELECT a.idNew, COUNT(a.idNew) AS coincidences FROM news AS a RIGHT OUTER JOIN newsTags AS b ON a.idNew=b.idNew RIGHT OUTER JOIN tags AS c ON b.idTag=c.idTag RIGHT OUTER JOIN files AS d ON a.idNew=d.idNew WHERE a.title LIKE '".$p."' OR c.name LIKE '".$p."' OR d.file LIKE '".$p."' GROUP BY a.idNew ORDER BY coincidences DESC";
+		$q = "SELECT a.idNew AS id, COUNT(a.idNew) AS coincidences FROM news AS a RIGHT OUTER JOIN newsTags AS b ON a.idNew=b.idNew RIGHT OUTER JOIN tags AS c ON b.idTag=c.idTag RIGHT OUTER JOIN files AS d ON a.idNew=d.idNew WHERE a.title LIKE '%".$p."%' OR c.name LIKE '%".$p."%' OR d.file LIKE '%".$p."%' GROUP BY a.idNew ORDER BY coincidences DESC";
 		return $this->exeQuery($q);
 	}
 

@@ -275,9 +275,9 @@
 	}
 
 	Init.prototype.submitFunc = function() {
-		var btn = document.getElementById('compose-form');
-		btn._this = this;
-		btn.addEventListener('submit', function(e){
+		var frm = document.getElementById('compose-form');
+		frm._this = this;
+		frm.addEventListener('submit', function(e){
 			var b = document.getElementById('compose-btn')
 			b.setAttribute('disabled', 'disabled');
 			if(e.preventDefault){
