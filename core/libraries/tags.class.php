@@ -17,6 +17,9 @@ class Tags extends Object {
 			case 'popular':
 				$tags = $this->popularTags();
 			break;
+			case 'used':
+				$tags = $this->usedTags();
+			break;
 			case 'all':
 			default:
 				$tags = $this->gatherData();
@@ -46,6 +49,18 @@ class Tags extends Object {
 	private function popularTags(){
 		$q = "SELECT COUNT(a.idTag) AS times, b.idTag AS id FROM newsTags AS a RIGHT OUTER JOIN tags AS b ON a.idTag=b.idTag GROUP BY b.idTag ORDER BY times DESC LIMIT 0,10";
 
+		return $this->genericUsedTag($q);
+	}
+
+	//Gets tags that have are linked to a news at least once
+	private function usedTags(){
+		$q = "SELECT COUNT(a.idTag) AS times, b.idTag AS id FROM newsTags AS a RIGHT OUTER JOIN tags AS b ON a.idTag=b.idTag GROUP BY b.idTag HAVING COUNT(a.idTag) > 0 ORDER BY times";
+
+		return $this->genericUsedTag($q);
+	}
+
+	//Used for most gathering functions (that involves use of a tag)
+	private function genericUsedTag($q){
 		$this->_db->query($q);
 		$data = $this->_db->data(true);
 

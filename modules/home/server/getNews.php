@@ -15,7 +15,7 @@ $news = $news->news;
 $tags = new Tags(array('get' => 'popular'));
 $tags = $tags->tags;
 
-$r = array('news' => $news, 'popularTags' => $tags);
+$r = array('news' => $news, 'usedTags' => $tags);
 
 echo json_encode($r);
 ?>
