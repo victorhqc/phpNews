@@ -99,7 +99,6 @@
 				container: '#chosen-tags-container',
 				callbacks: {
 					remove: function(t){
-						console.log(t);
 						t.I.removeTagFromNews(t);
 					}
 				},
@@ -213,7 +212,6 @@
 		var max = App.current._data.maxUpload;
 		max = max.match(/([0-9]+)/gi);
 		max = parseInt(max);
-		console.log(size, '>', max);
 		return (size > max) ? false : true;
 	}
 
