@@ -55,14 +55,70 @@
 		App.current.getServer(j);
 	};
 
-	Init.prototype.deleteModal = function() {
-		var jm = {createHelper: function(modal){
-			var dynamicContent = document.createElement('div');
-			dynamicContent.id = 'dynamo';
-			modal.body.appendChild(dynamicContent);
+	Init.prototype.deleteModal = function(news) {
+		var title = App.current.language.getText('delete-title');
+		var content = App.current.language.getText('delete-text');
+		var jm = {
+			title: title,
+			subtitle: news.title,
+			message: content,
+			App: App,
+			Init: this,
+			news: news,
+			idNews: news.id,
+			createHelper: function(modal){
+			var deleteBtn = document.createElement('button');
+			deleteBtn.className = 'btn btn-danger pull-right';
+			var i = document.createElement('i');
+			i.className = 'glyphicon glyphicon-warning-sign';
+			i.style['margin-right'] = '10px';
+
+			var text = modal.App.current.language.getText('delete-button');
+			deleteBtn.appendChild(i);
+			deleteBtn.appendChild(document.createTextNode(text));
+
+			deleteBtn.modal = modal;
+			deleteBtn.addEventListener('click', function(){
+				var m = this.modal;
+				this.modal.Init.deleteNews(modal.idNews, modal.news, function(){
+					m.hide();
+
+					setTimeout(function(){
+						m.remove()
+					}, 400);
+				});
+			});
+
+			modal.footer.appendChild(deleteBtn);
+
 		}};
 		var modal = new Modal(jm);
-		modal.show();
+
+		setTimeout(function(){
+			modal.show();
+		}, 10);
+	};
+
+	Init.prototype.deleteNews = function(id, news, callback) {
+		var j = {file:'deleteNews.php', data:{id:id}, callback:function(r){
+			var ja = {type:'success'};
+				ja.title = App.current.language.getText('delete-success-title');
+				ja.description = App.current.language.getText('delete-success-description');
+
+				if(r.success === false){
+					ja.title = App.language.getMainText('error_title');
+					ja.description = App.language.getMainText('error_desc');
+					ja.type = 'danger';
+				}else{
+					news.delete();
+				}
+
+				new nAlert(ja);
+				if(typeof callback === 'function'){
+					callback();
+				}
+		}};
+		App.current.getServer(j);
 	};
 
 	Init.prototype.renderNews = function(news) {
@@ -74,7 +130,7 @@
 			n.callbacks = {};
 			n._t = this;
 			n.callbacks.delete = function(news, btn){
-				news._t.deleteModal();
+				news._t.deleteModal(news);
 			};
 
 			var ne = new News(n);

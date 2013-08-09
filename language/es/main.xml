@@ -2,8 +2,8 @@
 	<dom>
 		
 	</dom>
-	<error_title>Ha habido un error :(</error_title>
-	<error_desc>Vuelve a intentarlo nuevamente en unos minutos, si el error persiste contacta a un administrador!</error_desc>
+	<error_title>Algo salió mal</error_title>
+	<error_desc>Vuelve a intentar, si el error continua contacta a un administrador</error_desc>
 	<months>
 		<m-1>Enero</m-1>
 		<m-2>Febrero</m-2>

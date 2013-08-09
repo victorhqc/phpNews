@@ -7,4 +7,10 @@
 
 		<pop-tags-subtitle>Etiquetas populares </pop-tags-subtitle>
 	</dom>
+	<delete-title>Borrar noticia</delete-title>
+	<delete-text>Estás a punto de eliminar una noticia, una vez borrada no puede ser recuperada, verifica que realmente quieras borrarla.</delete-text>
+	<delete-button>Borrar</delete-button>
+
+	<delete-success-title>Se ha eliminado la noticia</delete-success-title>
+	<delete-success-description> </delete-success-description>
 </content>

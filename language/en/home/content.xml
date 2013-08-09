@@ -1,0 +1,16 @@
+<content>
+	<dom>
+		<backend-title>Welcome </backend-title>
+		<backend-description>to the news manager</backend-description>
+
+		<search>Search</search>
+
+		<pop-tags-subtitle>Popular tags </pop-tags-subtitle>
+	</dom>
+	<delete-title>Delete news</delete-title>
+	<delete-text> You are about to delete a news, once deleted it cannot be recovered, verify that you really want to erase it.</delete-text>
+	<delete-button>Delete</delete-button>
+
+	<delete-success-title>The news has been deleted</delete-success-title>
+	<delete-success-description> </delete-success-description>
+</content>

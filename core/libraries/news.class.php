@@ -84,6 +84,38 @@ class News extends Object {
 			$this->search($d['search']);
 		}else if(array_key_exists('create', $d)){
 			$this->create($d['create']);
+		}else if(array_key_exists('delete', $d)){
+			$this->delete($d['delete']);
+		}
+	}
+
+	//Delete a news
+	//-------------
+	
+	private function delete($id){
+		//Removes the SQL data
+		$q = "DELETE FROM news WHERE idNew = ".$id;
+		$this->_db->query($q);
+
+		//Removes the attached files (if exists)
+		$dir = $this->_mainFolder.'/'.$id;
+		$this->deletesFiles($dir);
+	}
+
+	private function deletesFiles($dirPath){
+		if (is_dir($dirPath)) { 
+			$objects = scandir($dirPath); 
+			foreach ($objects as $object) { 
+				if ($object != "." && $object != "..") { 
+					if (filetype($dirPath."/".$object) == "dir"){
+						$this->deletesFiles($dirPath."/".$object);
+					}else{
+						unlink($dirPath."/".$object);
+					} 
+				} 
+			}
+			reset($objects); 
+			rmdir($dirPath); 
 		}
 	}
 

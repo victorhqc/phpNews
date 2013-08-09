@@ -291,8 +291,8 @@
 				ja.description = App.current.language.getText('success-description');
 
 				if(r.success === false){
-					ja.title = App.current.language.getMainText('error_title');
-					ja.description = App.current.getMainText('error_desc');
+					ja.title = App.language.getMainText('error_title');
+					ja.description = App.language.getMainText('error_desc');
 					ja.type = 'danger';
 				}else{
 					T.resetData();
