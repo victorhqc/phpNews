@@ -4,9 +4,11 @@
 		var t = this;
 
 		this.domFuncions();
-		this.getNews(50, 0, function(r){
-			t.renderNews(r.news);
-		}); // Gets the last 50 news
+		this.amount = 5;
+		this.i = 0;
+		this.getNews(this.amount, this.i, function(r){
+			t.renderNews(r.news, t.amount, t.i, r.total);
+		}); // Gets the last 15 news
 	}
 
 	//The functionality for the dom is set
@@ -28,14 +30,14 @@
 			var p = document.getElementById('search-parameter').value;
 			var t = this._this;
 			if(p !== ''){
-				this._this.searchNews(p, 50, 0, function(r){
+				this._this.searchNews(p, this.amount, this.i, function(r){
 					var b = document.getElementById('regular-search')
 					b.removeAttribute('disabled');
 					t.renderNews(r.news);
 				});
 			}else{
-				this._this.getNews(50, 0, function(r){
-					t.renderNews(r.news);
+				this._this.getNews(this.amount, this.i, function(r){
+					t.renderNews(r.news, t.amount, t.i, r.total);
 				});
 			}
 		});
@@ -121,8 +123,9 @@
 		App.current.getServer(j);
 	};
 
-	Init.prototype.renderNews = function(news) {
+	Init.prototype.renderNews = function(news, amount, j, total) {
 		var container = document.getElementById('news');
+		this.newsContainer = container;
 		container.innerHTML = '';
 		for(var i = 0, len = news.length; i < len; i++){
 			var n = news[i];
@@ -153,6 +156,56 @@
 				}
 			}
 		}
+
+		//After all the news are rendered, the pagination is set.
+		if(amount !== undefined && j !== undefined && total !== undefined){
+			this.pagination(total, amount, j);
+		}
+	};
+
+	Init.prototype.pagination = function(total, amount, i) {
+		var oldPagination = document.getElementById('news-pagination');
+		if(oldPagination !== null){
+			oldPagination.parentNode.removeChild(oldPagination);
+		}
+
+		var ul = document.createElement('ul');
+		ul.className = 'pagination';
+
+		//Calculate the number of pages
+		var pags = Math.ceil(total / amount);
+
+		var maxPags = 20;
+
+		for(var j = 0; j < pags && j < maxPags; j++){
+			var li = document.createElement('li');
+			console.log(i, j);
+			if(i === j){
+				li.className = 'active';
+			}
+			var a = document.createElement('a');
+			var n = j + (i * amount);
+			var num = document.createTextNode(j + 1);
+			a.appendChild(num);
+			a.href = '';
+			a._i = j;
+			a._amount = amount;
+			a._t = this;
+
+			li.appendChild(a);
+			ul.appendChild(li);
+
+			a.addEventListener('click', function(){
+				var amount = this._amount;
+				var i = this._i;
+				var t = this._t
+				this._t.getNews(amount, i, function(r){
+					t.renderNews(r.news, amount, i, r.total);
+				});
+			});
+		}
+
+		this.newsContainer.appendChild(ul);
 	};
 
 	var i = new Init();
