@@ -19,6 +19,10 @@
 		"home": {
 			"url": "web/",
 			"nombre": "home"
+		},
+		"setup": {
+			"url": "web/",
+			"nombre": "setup"
 		}
 	},
 	"mainmenu":{

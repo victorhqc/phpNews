@@ -44,8 +44,14 @@ var App;
 				//Access to the platform
 				App.getModule('backend');
 			}else{
-				//Login required
-				App.getModule('login');
+				if(r.nousers === true){
+					//New uer needed
+					//Login required
+					App.getModule('setup');
+				}else{
+					//Login required
+					App.getModule('login');
+				}
 			}
 
 			App.current.start(function(){});

@@ -67,6 +67,10 @@ class Identity {
 	//Verifies las cookies
 	public function verify(){
 		$this->_db = startDB();
+		$vf = $this->verifiesExistingUsers();
+		if($vf['nousers'] === true){
+			return $vf;
+		}
 		$data = $this->getIdentity();
 		$err = array('message' => 'You have no access', 'success' => false);
 		if($data['error'] == false){			
@@ -81,6 +85,20 @@ class Identity {
 
 		$this->destroyIdentity();
 		die(json_encode($err));
+	}
+
+	private function verifiesExistingUsers(){
+		//Is there a user registered?
+		$q = $this->_db->query("SELECT COUNT(idUser) AS i FROM users");
+		$t = $this->_db->data(true);
+		$t = $t[0];
+
+		$i['nousers'] = false;
+		if((int)$t['i'] == 0){
+			$i['nousers'] = true;
+			$i['success'] = false;
+			return $i;
+		}
 	}
 	
 	//For Login use only!

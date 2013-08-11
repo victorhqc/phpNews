@@ -1,0 +1,12 @@
+<content>
+	<dom>
+		<new-user-title>Nuevo usuario</new-user-title>
+		<name>Nombre</name>
+		<lastname>Apellido</lastname>
+		<email>Correo</email>
+		<password>Contraseña</password>
+		<password2>Vuelve a ingresar la contraseña</password2>
+		<btn>Crear usuario</btn>
+	</dom>
+	<wrong-password>Las contraseñas no coinciden</wrong-password>
+</content>

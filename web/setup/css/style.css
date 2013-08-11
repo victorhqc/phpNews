@@ -1,0 +1,8 @@
+#new-user-container {
+	margin-top: 60px;
+}
+
+#err {
+	display: none;
+	font-size: 1.5em;
+}
