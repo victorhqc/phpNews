@@ -1,7 +1,6 @@
 <?php
 $path_to_root = __DIR__.'/../../';
 require_once(__DIR__.'/object.class.php');
-require_once($path_to_root.'config.php');
 
 class ManyNews extends Object {
 	public $news;
@@ -11,13 +10,26 @@ class ManyNews extends Object {
 	public $max = 50;
 	public $path = '';
 	public $get;
+	public $config;
+	public $total = 0;
 
 	public function __construct($params){
 		if(!array_key_exists('get', $params)){
 			$params['get'] = 'regular';
 		}
-		$this->dbInit();
+
 		$this->newData($params);
+
+		if(!array_key_exists('config', $params)){
+			global $path_to_root;
+			$this->config = $path_to_root.'config.php';
+		}else{
+			$this->config = $params['config'];
+		}
+
+		require_once($this->config);
+
+		$this->dbInit();
 		$this->setPagination();
 
 		$n = array();
@@ -34,7 +46,7 @@ class ManyNews extends Object {
 	}
 
 	private function setPagination(){
-		$this->max = $this->i + 1 * $this->amount;
+		$this->max = ($this->i + 1) * $this->amount;
 		$this->min = $this->max - $this->amount;
 	}
 
@@ -55,10 +67,19 @@ class ManyNews extends Object {
 		$manyNews = array();
 		foreach($data as $t){
 			$arr = array('id' => $t['id']);
+			$arr['config'] = $this->config;
 			$news = new News($arr);
 			$news = $news->getData();
 			$manyNews[] = $news;
 		}
+
+		//After the desired news are gathered
+		//The total of news are searched for the UI pagination.
+		$q = "SELECT COUNT(idNew) AS total FROM news";
+		$this->_db->query($q);
+		$total = $this->_db->data(true);
+		$total = $total[0]['total'];
+		$this->total = $total;
 
 		return $manyNews;
 	}
@@ -75,7 +96,13 @@ class News extends Object {
 	public function __construct($d){
 		$this->dbInit();
 
-		global $path_to_root;
+		if(!array_key_exists('config', $d)){
+			global $path_to_root;
+			require_once($path_to_root.'config.php');
+		}else{
+			require_once($d['config']);
+		}
+
 		$this->_mainFolder = $path_to_root.$GLOBALS['stored_files_path'];
 
 		if(array_key_exists('id', $d)){
