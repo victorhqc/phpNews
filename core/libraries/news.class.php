@@ -103,6 +103,7 @@ class News extends Object {
 			require_once($d['config']);
 		}
 
+		global $path_to_root;
 		$this->_mainFolder = $path_to_root.$GLOBALS['stored_files_path'];
 
 		if(array_key_exists('id', $d)){
