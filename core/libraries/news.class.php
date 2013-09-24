@@ -37,6 +37,9 @@ class ManyNews extends Object {
 			case 'search':
 				$n = $this->searchData($this->search);
 			break;
+			case 'get':
+				$n = $this->getSpecificNews($this->search);
+			break;
 			case 'regular':
 			default:
 				$n = $this->gatherData();
@@ -52,6 +55,12 @@ class ManyNews extends Object {
 
 	private function gatherData(){
 		$q = "SELECT idNew AS id FROM news ORDER BY idNew DESC LIMIT ".$this->min.", ".$this->max;
+		return $this->exeQuery($q);
+	}
+
+	private function getSpecificNews($id){
+		$q = "SELECT idNew AS id FROM news WHERE idNew = ".$id;
+
 		return $this->exeQuery($q);
 	}
 
