@@ -37,7 +37,7 @@ class ManyNews extends Object {
 			case 'search':
 				$n = $this->searchData($this->search);
 			break;
-			case 'get':
+			case 'specific':
 				$n = $this->getSpecificNews($this->search);
 			break;
 			case 'regular':
