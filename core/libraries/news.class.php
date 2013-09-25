@@ -169,10 +169,11 @@ class News extends Object {
 		$complex = array();
 		$today = date('Y-m-d H:i:s');
 
-		$d['date'] = $today;
+		$d['date'] = $today;	
+		$banned = array('files' => '', 'tags' => '');
 		foreach ($d as $key => $value) {
 			$t = gettype($value);
-			if($t != 'array'){
+			if($t != 'array' && array_key_exists($key, $banned) === false){
 				if($value != ''){
 					$value = utf8_decode($value);
 					$columns .= $key.", ";
