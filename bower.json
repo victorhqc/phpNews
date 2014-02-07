@@ -1,0 +1,12 @@
+{
+	"name": "phpNews",
+	"dependencies": {
+		"bootstrap": "",
+		"jquery": "",
+		"textAngular": "",
+		"classie": "",
+		"modals": "",
+		"webapp": "",
+		"font-awesome": ""
+	}
+}
