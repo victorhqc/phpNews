@@ -13,3 +13,9 @@
 input[type="file"] {
 	display: none;
 }
+
+.editor-phpnews {
+	min-height: 200px;
+	margin: 10px 0;
+	overflow: auto;
+}

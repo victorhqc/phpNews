@@ -328,7 +328,7 @@
 		}
 
 		//Clean Inputs
-		var inps = document.querySelectorAll('#compose-form .form-control');
+		var inps = document.querySelectorAll('#compose-form .compose-control');
 
 		var values = {};
 		for(var i = 0, len = inps.length; i < len; i++){
@@ -336,6 +336,8 @@
 
 			inp.value = '';
 		}
+
+		editor.htmlcontent = '';
 	}
 
 	Init.prototype.sendData = function(data, callback){
@@ -343,14 +345,15 @@
 	}
 
 	Init.prototype.gatherComposeData = function() {
-		var inps = document.querySelectorAll('#compose-form .form-control');
+		var inps = document.querySelectorAll('#compose-form .compose-control');
 
 		var values = {};
 		for(var i = 0, len = inps.length; i < len; i++){
 			var inp = inps[i];
-
 			values[inp.name] = inp.value;
 		}
+
+		values.description = encodeURI(editor.htmlcontent);
 
 		//Tags
 		values.tags = App.current._chosenTags;
@@ -373,4 +376,14 @@
 	};
 
 	var i = new Init();
+
+	var Compose = angular.module('compose', ['textAngular']);
+
+	var editor;
+	Compose.controller('editor', function($scope, $rootScope){
+		editor = $scope;
+	});
+
+	var elm = document.getElementById('compose-ng');
+	angular.bootstrap(elm, ['compose']);
 })();

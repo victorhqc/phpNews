@@ -1,15 +1,20 @@
-<div class="row">
+<div class="row" ng-app="compose" id="compose-ng">
 	<div class="col-lg-7">
 		<form id="compose-form">
 			<fieldset>
 				<div class="form-group">
 					<label for="c-title" data-ltag="compose-title"></label>
-					<input type="text" class="form-control" id="c-title" name="title" required>
+					<input type="text" class="form-control compose-control" id="c-title" name="title" required>
 				</div>
 				<div class="form-group">
 					<label for="c-description" data-ltag="compose-description"></label>
-					<textarea class="form-control" id="c-description" name="description">
-					</textarea>
+					<div class="row">
+						<div class="col-sm-12" ng-controller="editor">
+							<div ng-controller="editor">
+								<text-angular name="htmlcontent" ng-model="htmlcontent" ta-text-editor-class="form-control editor-phpnews" ta-html-editor-class="form-content" ta-toolbar="[['h1','h2','h3','p'], ['bold','italics','ul','ol','redo','undo','clear']]"></text-angular>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="btn-group">
 					<button id="compose-btn" type="submit" class="btn btn-primary" data-ltag="button-ready"></button>
