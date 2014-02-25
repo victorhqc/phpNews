@@ -43,6 +43,9 @@ class ManyNews extends Object {
 			case 'tag':
 				$n = $this->getTaggedNews($this->search);
 			break;
+			case 'no tag':
+				$n = $this->getTaggedNews($this->search, true);
+			break;
 			case 'regular':
 			default:
 				$n = $this->gatherData();
@@ -67,10 +70,17 @@ class ManyNews extends Object {
 		return $this->exeQuery($q);
 	}
 
-	private function getTaggedNews(array $tags){
+	private function getTaggedNews(array $tags, $negated = false){
 		$where = "";
+		$op = "OR";
+		$equals = "=";
+		if($negated){ 
+			$equals = "!=";
+			$op = "AND";
+		}
+
 		foreach ($tags as $tag) {
-			$where .= "c.name = '".utf8_decode($tag)."' OR ";
+			$where .= "c.name ".$equals." '".utf8_decode($tag)."' ".$op." ";
 		}
 
 		$where = substr($where, 0, -4);
@@ -100,11 +110,7 @@ class ManyNews extends Object {
 
 		//After the desired news are gathered
 		//The total of news are searched for the UI pagination.
-		$q = "SELECT COUNT(idNew) AS total FROM news";
-		$this->_db->query($q);
-		$total = $this->_db->data(true);
-		$total = $total[0]['total'];
-		$this->total = $total;
+		$this->total = count($manyNews);
 
 		return $manyNews;
 	}
