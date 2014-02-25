@@ -60,8 +60,8 @@ class ManyNews extends Object {
 	}
 
 	private function gatherData(){
-		$q = "SELECT idNew AS id FROM news ORDER BY idNew DESC LIMIT ".$this->min.", ".$this->max;
-		return $this->exeQuery($q);
+		$q = "SELECT idNew AS id FROM news ORDER BY idNew DESC";
+		return $this->exeQuery($q, true);
 	}
 
 	private function getSpecificNews($id){
@@ -72,30 +72,35 @@ class ManyNews extends Object {
 
 	private function getTaggedNews(array $tags, $negated = false){
 		$where = "";
-		$op = "OR";
-		$equals = "=";
-		if($negated){ 
-			$equals = "!=";
-			$op = "AND";
-		}
-
 		foreach ($tags as $tag) {
-			$where .= "c.name ".$equals." '".utf8_decode($tag)."' ".$op." ";
+			$where .= "c.name = '".utf8_decode($tag)."' OR ";
 		}
 
 		$where = substr($where, 0, -4);
 
 		$q = "SELECT a.idNew AS id FROM news AS a RIGHT OUTER JOIN newsTags AS b ON a.idNew=b.idNew RIGHT OUTER JOIN tags AS c ON b.idTag=c.idTag WHERE ".$where." AND a.idNew IS NOT NULL GROUP BY a.idNew";
 
-		return $this->exeQuery($q);
+		if($negated){
+			$q = "SELECT idNew AS id FROM news WHERE idNew NOT IN (SELECT a.idNew AS id FROM news AS a RIGHT OUTER JOIN newsTags AS b ON a.idNew=b.idNew RIGHT OUTER JOIN tags AS c ON b.idTag=c.idTag WHERE  ".$where." AND a.idNew IS NOT NULL GROUP BY a.idNew) ORDER BY idNew DESC";
+		}
+
+		return $this->exeQuery($q, true);
 	}
 
 	private function searchData($p){
 		$q = "SELECT a.idNew AS id, COUNT(a.idNew) AS coincidences FROM news AS a RIGHT OUTER JOIN newsTags AS b ON a.idNew=b.idNew RIGHT OUTER JOIN tags AS c ON b.idTag=c.idTag RIGHT OUTER JOIN files AS d ON a.idNew=d.idNew WHERE a.title LIKE '%".$p."%' OR c.name LIKE '%".$p."%' OR d.file LIKE '%".$p."%' GROUP BY a.idNew ORDER BY coincidences DESC";
-		return $this->exeQuery($q);
+		return $this->exeQuery($q, true);
 	}
 
-	private function exeQuery($q){
+	private function exeQuery($q, $multiple = false){
+		if($multiple){
+			$this->_db->query($q);
+			$data = $this->_db->data(true);
+			$this->total = count($data);
+
+			$q .= " LIMIT ".$this->min.", ".$this->max;
+		}
+
 		$this->_db->query($q);
 		$data = $this->_db->data(true);
 
@@ -107,10 +112,6 @@ class ManyNews extends Object {
 			$news = $news->getData();
 			$manyNews[] = $news;
 		}
-
-		//After the desired news are gathered
-		//The total of news are searched for the UI pagination.
-		$this->total = count($manyNews);
 
 		return $manyNews;
 	}
