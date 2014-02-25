@@ -40,6 +40,9 @@ class ManyNews extends Object {
 			case 'specific':
 				$n = $this->getSpecificNews($this->search);
 			break;
+			case 'tag':
+				$n = $this->getTaggedNews($this->search);
+			break;
 			case 'regular':
 			default:
 				$n = $this->gatherData();
@@ -60,6 +63,19 @@ class ManyNews extends Object {
 
 	private function getSpecificNews($id){
 		$q = "SELECT idNew AS id FROM news WHERE idNew = ".$id;
+
+		return $this->exeQuery($q);
+	}
+
+	private function getTaggedNews(array $tags){
+		$where = "";
+		foreach ($tags as $tag) {
+			$where .= "c.name = '".utf8_decode($tag)."' OR ";
+		}
+
+		$where = substr($where, 0, -4);
+
+		$q = "SELECT a.idNew AS id FROM news AS a RIGHT OUTER JOIN newsTags AS b ON a.idNew=b.idNew RIGHT OUTER JOIN tags AS c ON b.idTag=c.idTag WHERE ".$where;
 
 		return $this->exeQuery($q);
 	}
