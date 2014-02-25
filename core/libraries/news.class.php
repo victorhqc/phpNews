@@ -85,7 +85,7 @@ class ManyNews extends Object {
 
 		$where = substr($where, 0, -4);
 
-		$q = "SELECT a.idNew AS id FROM news AS a RIGHT OUTER JOIN newsTags AS b ON a.idNew=b.idNew RIGHT OUTER JOIN tags AS c ON b.idTag=c.idTag WHERE ".$where;
+		$q = "SELECT a.idNew AS id FROM news AS a RIGHT OUTER JOIN newsTags AS b ON a.idNew=b.idNew RIGHT OUTER JOIN tags AS c ON b.idTag=c.idTag WHERE ".$where." AND a.idNew IS NOT NULL GROUP BY a.idNew";
 
 		return $this->exeQuery($q);
 	}
