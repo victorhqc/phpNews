@@ -198,7 +198,7 @@ class News extends Object {
 			$t = gettype($value);
 			if($t != 'array' && array_key_exists($key, $banned) === false){
 				if($value != ''){
-					$value = utf8_decode($value);
+					
 					$columns .= $key.", ";
 					$values .= "'".$value."', ";
 				}
@@ -273,6 +273,8 @@ class News extends Object {
 			foreach ($d as $key => $value) {
 				$this->{$key} = $value;
 			}
+			$this->title = urldecode($this->title);
+			$this->description = urldecode($this->description);
 
 			$this->gatherTags();
 			$this->gatherFiles();
